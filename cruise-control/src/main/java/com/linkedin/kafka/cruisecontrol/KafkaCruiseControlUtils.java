@@ -7,6 +7,7 @@ package com.linkedin.kafka.cruisecontrol;
 import com.linkedin.kafka.cruisecontrol.analyzer.goals.Goal;
 import com.linkedin.kafka.cruisecontrol.analyzer.kafkaassigner.KafkaAssignerDiskUsageDistributionGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.kafkaassigner.KafkaAssignerEvenRackAwareGoal;
+import static com.linkedin.kafka.cruisecontrol.monitor.MonitorUtils.getRackHandleNull;
 import com.linkedin.kafka.cruisecontrol.servlet.response.CruiseControlState;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -323,7 +324,7 @@ public class KafkaCruiseControlUtils {
         continue;
       }
       // If the rack is not specified, we use the broker id info as rack info.
-      String rack = node.rack() == null || node.rack().isEmpty() ? String.valueOf(node.id()) : node.rack();
+      String rack = getRackHandleNull(node);
       brokersByRack.putIfAbsent(rack, new ArrayList<>());
       brokersByRack.get(rack).add(node.id());
       rackByBroker.put(node.id(), rack);
